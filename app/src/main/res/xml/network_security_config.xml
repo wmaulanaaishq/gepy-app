@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config xmlns:tools="http://schemas.android.com/tools">
+    <!--
+        Opsi 1: Cleartext HTTP hanya dimaksudkan untuk LAN privat ESP32 CSI (:8765) & Tailscale Mesh (:8888),
+        karena Android <domain-config> tidak mendukung IP wildcard / subnet CIDR (192.168.x.x / 100.x.x.x).
+        Seluruh domain API & layanan cloud eksternal diwajibkan HTTPS di blok <domain-config> di bawah.
+    -->
+    <base-config
+        cleartextTrafficPermitted="true"
+        tools:ignore="InsecureBaseConfiguration">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">workers.dev</domain>
+        <domain includeSubdomains="true">sentry.io</domain>
+        <domain includeSubdomains="true">googleapis.com</domain>
+        <domain includeSubdomains="true">fireworks.ai</domain>
+        <domain includeSubdomains="true">api.elevenlabs.io</domain>
+        <domain includeSubdomains="true">api.github.com</domain>
+        <domain includeSubdomains="true">raw.githubusercontent.com</domain>
+        <domain includeSubdomains="true">r.jina.ai</domain>
+        <domain includeSubdomains="true">s.jina.ai</domain>
+        <domain includeSubdomains="true">openrouter.ai</domain>
+        <domain includeSubdomains="true">api.groq.com</domain>
+        <domain includeSubdomains="true">api.deepseek.com</domain>
+        <domain includeSubdomains="true">api.together.xyz</domain>
+        <domain includeSubdomains="true">huggingface.co</domain>
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>

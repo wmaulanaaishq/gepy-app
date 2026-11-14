@@ -1,0 +1,270 @@
+{
+  "benchmark_name": "GepyToolCallingBenchmark",
+  "version": "1.0",
+  "description": "Benchmark pemanggilan fungsi (Function Calling) Gepy Native untuk alat pengembang AI, kontrol sistem Android, memori, dan percakapan kasual (BFCL-style).",
+  "test_cases": [
+    {
+      "id": "tc_github_search_001",
+      "user_utterance": "Gep, tolong cariin repo github tentang agentic ai yang lagi rame",
+      "expected_tool": "query_github_trending_or_search",
+      "expected_parameters": {
+        "query": "agentic-ai"
+      },
+      "parameter_match_mode": "fuzzy_semantic",
+      "negative_case": false,
+      "category": "developer_tools"
+    },
+    {
+      "id": "tc_github_details_002",
+      "user_utterance": "Cek repo langchain-ai/langgraph dong, kapan rilisnya dan fiturnya apa aja?",
+      "expected_tool": "get_github_repo_details",
+      "expected_parameters": {
+        "repo": "langchain-ai/langgraph"
+      },
+      "parameter_match_mode": "exact",
+      "negative_case": false,
+      "category": "developer_tools"
+    },
+    {
+      "id": "tc_hf_trending_003",
+      "user_utterance": "Model open-source apa yang lagi trending di Hugging Face hari ini?",
+      "expected_tool": "query_huggingface_trending",
+      "expected_parameters": {
+        "query": ""
+      },
+      "parameter_match_mode": "empty_or_optional",
+      "negative_case": false,
+      "category": "developer_tools"
+    },
+    {
+      "id": "tc_hf_details_004",
+      "user_utterance": "Bisa tolong lihat detail model Qwen/Qwen2.5-72B-Instruct di Hugging Face?",
+      "expected_tool": "get_huggingface_model_details",
+      "expected_parameters": {
+        "model_id": "Qwen/Qwen2.5-72B-Instruct"
+      },
+      "parameter_match_mode": "exact",
+      "negative_case": false,
+      "category": "developer_tools"
+    },
+    {
+      "id": "tc_browser_open_005",
+      "user_utterance": "Buka link https://github.com/fastapi/fastapi di browser HP sekarang",
+      "expected_tool": "open_browser_url",
+      "expected_parameters": {
+        "url": "https://github.com/fastapi/fastapi"
+      },
+      "parameter_match_mode": "exact",
+      "negative_case": false,
+      "category": "browser_navigation"
+    },
+    {
+      "id": "tc_web_search_006",
+      "user_utterance": "Berapa kurs dollar ke rupiah hari ini?",
+      "expected_tool": "search_web_realtime",
+      "expected_parameters": {
+        "query": "kurs dollar rupiah hari ini"
+      },
+      "parameter_match_mode": "fuzzy_semantic",
+      "negative_case": false,
+      "category": "web_search"
+    },
+    {
+      "id": "tc_alarm_007",
+      "user_utterance": "Setel alarm jam 5 pagi ya, labelnya bangun subuh",
+      "expected_tool": "set_system_alarm",
+      "expected_parameters": {
+        "hour": 5,
+        "minute": 0,
+        "label": "bangun subuh"
+      },
+      "parameter_match_mode": "subset",
+      "negative_case": false,
+      "category": "system_tools"
+    },
+    {
+      "id": "tc_settings_008",
+      "user_utterance": "Buka pengaturan Wi-Fi dong",
+      "expected_tool": "open_system_settings_panel",
+      "expected_parameters": {
+        "panel": "wifi"
+      },
+      "parameter_match_mode": "exact",
+      "negative_case": false,
+      "category": "system_tools"
+    },
+    {
+      "id": "tc_maps_009",
+      "user_utterance": "Navigasikan ke Stasiun Tugu Yogyakarta lewat Google Maps",
+      "expected_tool": "open_maps_navigation",
+      "expected_parameters": {
+        "destination": "Stasiun Tugu Yogyakarta"
+      },
+      "parameter_match_mode": "fuzzy_semantic",
+      "negative_case": false,
+      "category": "system_tools"
+    },
+    {
+      "id": "tc_device_status_010",
+      "user_utterance": "Berapa sisa baterai HP saya dan jam berapa sekarang?",
+      "expected_tool": "get_device_and_time_status",
+      "expected_parameters": {},
+      "parameter_match_mode": "empty_or_optional",
+      "negative_case": false,
+      "category": "system_tools"
+    },
+    {
+      "id": "tc_save_memory_011",
+      "user_utterance": "Ingat ya Gep, makanan favoritku nasi padang rendang dan aku alergi udang",
+      "expected_tool": "save_user_memory",
+      "expected_parameters": {
+        "category": "preference"
+      },
+      "parameter_match_mode": "subset",
+      "negative_case": false,
+      "category": "memory_tools"
+    },
+    {
+      "id": "tc_correct_memory_012",
+      "user_utterance": "Eh salah, adikku bukan Ricky tapi Rizky",
+      "expected_tool": "update_or_correct_memory",
+      "expected_parameters": {
+        "target_to_replace": "Ricky",
+        "category": "family"
+      },
+      "parameter_match_mode": "subset",
+      "negative_case": false,
+      "category": "memory_tools"
+    },
+    {
+      "id": "tc_briefing_013",
+      "user_utterance": "Kasih aku briefing pagi dong Gep",
+      "expected_tool": "get_daily_briefing",
+      "expected_parameters": {},
+      "parameter_match_mode": "empty_or_optional",
+      "negative_case": false,
+      "category": "wellness_tools"
+    },
+    {
+      "id": "tc_end_call_014",
+      "user_utterance": "Udah dulu ya Gep, makasih banyak. Sampai jumpa!",
+      "expected_tool": "end_live_call",
+      "expected_parameters": {},
+      "parameter_match_mode": "empty_or_optional",
+      "negative_case": false,
+      "category": "communication_tools"
+    },
+    {
+      "id": "tc_negative_chit_chat_015",
+      "user_utterance": "Halo Samantha, selamat pagi! Kamu terlihat cantik hari ini.",
+      "expected_tool": null,
+      "expected_parameters": null,
+      "parameter_match_mode": "exact",
+      "negative_case": true,
+      "description": "Pujian kasual santai dilarang memicu tool apa pun (spurious invocation)",
+      "category": "conversational_chit_chat"
+    },
+    {
+      "id": "tc_negative_tech_opinion_016",
+      "user_utterance": "Menurut kamu mendingan pakai FastAPI atau Django kalau buat microservice AI?",
+      "expected_tool": null,
+      "expected_parameters": null,
+      "parameter_match_mode": "exact",
+      "negative_case": true,
+      "description": "Pertanyaan opini teknis harus dijawab langsung dengan wawasan AI tanpa memanggil tool web search",
+      "category": "conversational_chit_chat"
+    },
+    {
+      "id": "tc_negative_banter_017",
+      "user_utterance": "Kamu kok pinter banget sih, siapa yang ngajarin?",
+      "expected_tool": null,
+      "expected_parameters": null,
+      "parameter_match_mode": "exact",
+      "negative_case": true,
+      "description": "Banter santai dijawab langsung dengan kepribadian Samantha yang percaya diri",
+      "category": "conversational_chit_chat"
+    },
+    {
+      "id": "tc_system_flashlight_018",
+      "user_utterance": "Nyalain senter HP sekarang dong Gep",
+      "expected_tool": "control_device_system",
+      "expected_parameters": {
+        "action": "flashlight_on"
+      },
+      "parameter_match_mode": "subset",
+      "negative_case": false,
+      "category": "system_tools_api_first"
+    },
+    {
+      "id": "tc_system_timer_019",
+      "user_utterance": "Pasang timer 5 menit buat masak mie",
+      "expected_tool": "control_device_system",
+      "expected_parameters": {
+        "action": "set_timer",
+        "duration_seconds": 300,
+        "label": "masak mie"
+      },
+      "parameter_match_mode": "subset",
+      "negative_case": false,
+      "category": "system_tools_api_first"
+    },
+    {
+      "id": "tc_system_volume_020",
+      "user_utterance": "Ubah HP ke mode getar ya",
+      "expected_tool": "control_device_system",
+      "expected_parameters": {
+        "action": "set_ringer_mode",
+        "value": "getar"
+      },
+      "parameter_match_mode": "subset",
+      "negative_case": false,
+      "category": "system_tools_api_first"
+    },
+    {
+      "id": "tc_system_now_playing_021",
+      "user_utterance": "Ini lagu apa yang lagi muter sekarang?",
+      "expected_tool": "control_device_system",
+      "expected_parameters": {
+        "action": "now_playing"
+      },
+      "parameter_match_mode": "exact",
+      "negative_case": false,
+      "category": "media_session_api"
+    },
+    {
+      "id": "tc_notif_reply_022",
+      "user_utterance": "Balas pesan WhatsApp dari Budi bilang sebentar lagi sampai",
+      "expected_tool": "manage_notifications",
+      "expected_parameters": {
+        "action": "reply",
+        "sender_or_app": "Budi",
+        "reply_message": "sebentar lagi sampai"
+      },
+      "parameter_match_mode": "subset",
+      "negative_case": false,
+      "category": "notification_api"
+    },
+    {
+      "id": "tc_notif_dismiss_023",
+      "user_utterance": "Bersihkan semua notifikasi sekarang",
+      "expected_tool": "manage_notifications",
+      "expected_parameters": {
+        "action": "dismiss",
+        "sender_or_app": "all"
+      },
+      "parameter_match_mode": "subset",
+      "negative_case": false,
+      "category": "notification_api"
+    },
+    {
+      "id": "tc_negative_pomodoro_question_024",
+      "user_utterance": "Menurut kamu manfaat teknik timer 25 menit Pomodoro buat kerja itu apa sih?",
+      "expected_tool": null,
+      "expected_parameters": null,
+      "parameter_match_mode": "exact",
+      "negative_case": true,
+      "description": "Pertanyaan informasi/konsep yang kebetulan menyebut kata timer dilarang memicu set_timer",
+      "category": "conversational_chit_chat"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Aturan Pencadangan Cloud Warisan untuk Android 11 (API 30) ke bawah -->
+<full-backup-content>
+    <!-- Masukkan basis data Room v4 utama -->
+    <include domain="database" path="gepy_core.db" />
+    <!-- Masukkan preferensi sesi & ingatan lokal -->
+    <include domain="sharedpref" path="gepy_user_profile_memory_prefs.xml" />
+    <include domain="sharedpref" path="gepy_auth_session_prefs.xml" />
+    <include domain="sharedpref" path="gepy_byok_preferences.xml" />
+
+    <!-- Kecualikan berkas sementara SQLite (WAL & SHM) -->
+    <exclude domain="database" path="gepy_core.db-wal" />
+    <exclude domain="database" path="gepy_core.db-shm" />
+    <!-- Catatan: domain="file" (termasuk voice_cache/) otomatis dikecualikan karena daftar <include> di atas bersifat eksplisit -->
+</full-backup-content>

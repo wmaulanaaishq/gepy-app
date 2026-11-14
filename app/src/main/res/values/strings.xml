@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Gepy</string>
+    <string name="quick_tile_label">Gepy Suara</string>
+    <string name="accessibility_service_description">Gepy adalah Personal AI Agent otonom yang membantu mengoperasikan ponsel secara hands-free, membaca isi layar dan pesan, serta menjalankan tugas aplikasi sesuai perintah suara atau teks.</string>
+</resources>

@@ -1,0 +1,40 @@
+# Gradle, Kotlin & Android Studio build outputs
+.gradle/
+.kotlin/
+.licenses/
+build/
+app/build/
+captures/
+.externalNativeBuild/
+.cxx/
+backend/**/.wrangler/
+
+# Local configuration & secrets (DO NOT COMMIT)
+local.properties
+local_secrets.json
+!local_secrets.example.json
+*.keystore
+*.jks
+dist/
+*.apk
+*.aab
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Agent teamwork logs
+.agents/
+
+# Python cache & logs
+__pycache__/
+*.pyc
+*.log
+
+# Agent scratch workspace
+scratch/

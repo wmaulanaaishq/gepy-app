@@ -1,0 +1,17 @@
+name = "gepy-api-gateway"
+main = "worker.js"
+compatibility_date = "2024-09-23"
+account_id = "YOUR_CLOUDFLARE_ACCOUNT_ID"
+
+[vars]
+ENVIRONMENT = "production"
+MAX_REQUESTS_PER_MINUTE = "60"
+GOOGLE_WEB_CLIENT_ID = "YOUR_GOOGLE_WEB_CLIENT_ID.apps.googleusercontent.com"
+DEFAULT_GEMINI_MODEL = "gemini-2.5-flash"
+EMBEDDING_MODEL = "gemini-embedding-2"
+SUPABASE_URL = "https://YOUR_SUPABASE_PROJECT.supabase.co"
+
+# Rahasia runtime (set via `wrangler secret put`):
+# - GEMINI_API_KEY
+# - SUPABASE_SERVICE_ROLE_KEY
+# - JWT_SIGNING_SECRET

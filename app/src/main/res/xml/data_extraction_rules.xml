@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Aturan Pencadangan Cloud & Transfer Perangkat untuk Android 12 (API 31)+ -->
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- Masukkan basis data Room v4 utama -->
+        <include domain="database" path="gepy_core.db" />
+        <!-- Masukkan preferensi sesi & ingatan lokal -->
+        <include domain="sharedpref" path="gepy_user_profile_memory_prefs.xml" />
+        <include domain="sharedpref" path="gepy_auth_session_prefs.xml" />
+        <include domain="sharedpref" path="gepy_byok_preferences.xml" />
+
+        <!-- Kecualikan berkas sementara SQLite (WAL & SHM) agar tidak terjadi korupsi data -->
+        <exclude domain="database" path="gepy_core.db-wal" />
+        <exclude domain="database" path="gepy_core.db-shm" />
+        <!-- Catatan: domain="file" (termasuk voice_cache/) otomatis dikecualikan karena daftar <include> di atas bersifat eksplisit -->
+    </cloud-backup>
+
+    <device-transfer>
+        <!-- Transfer langsung saat pengguna memindahkan data ke HP baru -->
+        <include domain="database" path="gepy_core.db" />
+        <include domain="sharedpref" path="gepy_user_profile_memory_prefs.xml" />
+        <include domain="sharedpref" path="gepy_auth_session_prefs.xml" />
+        <include domain="sharedpref" path="gepy_byok_preferences.xml" />
+        <exclude domain="database" path="gepy_core.db-wal" />
+        <exclude domain="database" path="gepy_core.db-shm" />
+    </device-transfer>
+</data-extraction-rules>
