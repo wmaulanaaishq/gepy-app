@@ -6,6 +6,14 @@ on:
       - main
       - master
       - develop
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+      - '**/*.png'
+      - '**/*.jpg'
+      - '**/*.gif'
+      - 'LICENSE'
+      - 'NOTICE'
     tags:
       - 'v*'
   pull_request:
@@ -13,10 +21,18 @@ on:
       - main
       - master
       - develop
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+      - '**/*.png'
+      - '**/*.jpg'
+      - '**/*.gif'
+      - 'LICENSE'
+      - 'NOTICE'
   workflow_dispatch:
     inputs:
       include_debug_apk:
-        description: "Sertakan debug.apk (~91 MB) pada artifact manual"
+        description: "Sertakan debug.apk (~92 MB) pada artifact manual"
         required: false
         default: false
         type: boolean
@@ -30,10 +46,10 @@ permissions:
   checks: write
 
 jobs:
-  quality-and-unit-tests:
-    name: "Quality Gate: Unit Tests & Android Lint"
+  fast-gate:
+    name: "Fast Security & Gepy-Eval Gate"
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 5
 
     steps:
       - name: Checkout Repository
@@ -51,6 +67,20 @@ jobs:
           fi
           echo "Security check passed: tidak ada berkas kredensial rahasia yang terlacak di Git."
 
+      - name: Run Gepy-Eval Dataset, Tool & Persona Regression Gate
+        run: python3 ./scripts/evals/runner.py --mode quick
+
+  quality-and-unit-tests:
+    name: "Quality Gate: Unit Tests & Android Lint"
+    needs: fast-gate
+    if: ${{ github.event.repository.private == false || startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Set up JDK 21 (Eclipse Temurin)
         uses: actions/setup-java@v4
         with:
@@ -60,7 +90,7 @@ jobs:
       - name: Setup Gradle with Caching
         uses: gradle/actions/setup-gradle@v4
         with:
-          cache-read-only: false
+          cache-read-only: ${{ github.event.repository.private == true || (github.ref != 'refs/heads/main' && github.ref != 'refs/heads/master') }}
 
       - name: Grant Execute Permission for gradlew
         run: chmod +x ./gradlew
@@ -71,11 +101,8 @@ jobs:
       - name: Run Android Static Analysis (lintDebug)
         run: ./gradlew lintDebug --stacktrace
 
-      - name: Run Gepy-Eval Dataset, Tool & Persona Regression Gate
-        run: python3 ./scripts/evals/runner.py --mode quick
-
-      - name: Upload Unit Test & Lint Reports
-        if: always()
+      - name: Upload Unit Test & Lint Reports (Failure Only)
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: gepy-quality-reports
@@ -83,7 +110,7 @@ jobs:
             app/build/reports/tests/testDebugUnitTest/
             app/build/reports/lint-results-debug.html
             app/build/reports/lint-results-debug.xml
-          retention-days: 3
+          retention-days: 1
 
   build-apk:
     name: "Build Check & Release Binaries"
@@ -104,7 +131,7 @@ jobs:
       - name: Setup Gradle with Caching
         uses: gradle/actions/setup-gradle@v4
         with:
-          cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/master' }}
+          cache-read-only: ${{ github.event.repository.private == true || (github.ref != 'refs/heads/main' && github.ref != 'refs/heads/master') }}
 
       - name: Grant Execute Permission for gradlew
         run: chmod +x ./gradlew
