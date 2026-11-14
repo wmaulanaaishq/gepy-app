@@ -461,13 +461,19 @@ class UserMemoryManagerTest {
         assertTrue("Direktif rapat evaluasi harus tersimpan", factsAfterDirective.any { it.contains("rapat evaluasi") })
     }
 
+    /** Creates a UserMemoryManager whose background sync coroutines execute deterministically on the calling thread. */
+    private fun newUnconfinedMemoryManager(): UserMemoryManager = UserMemoryManager(
+        scope = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Unconfined)
+    )
+
     @Test
     fun `Kalimat interogatif atau pertanyaan pengguna tidak pernah diekstrak menjadi fakta memori baru`() = kotlinx.coroutines.runBlocking {
-        val manager = UserMemoryManager()
+        val manager = newUnconfinedMemoryManager()
         manager.clearLocalMemory()
         manager.setUserDisplayName("Maulana", isConfirmed = true)
 
-        val countBefore = manager.getActiveTemporalFactsSync().size
+        val factsBefore = manager.getActiveTemporalFactsSync()
+        assertEquals("Fakta profil nama harus tercatat sinkron sebelum uji interogatif", 1, factsBefore.size)
 
         // Pertanyaan tidak boleh menjadi fakta memori!
         manager.inspectTranscriptForProfile("Siapa nama adikku?")
@@ -475,8 +481,9 @@ class UserMemoryManagerTest {
         manager.inspectTranscriptForProfile("Apa jadwal saya hari ini?")
         manager.inspectTranscriptForProfile("Kamu ingat gak siapa temanku?")
 
-        val countAfter = manager.getActiveTemporalFactsSync().size
-        assertEquals("Pertanyaan tidak boleh menambah fakta baru ke memori", countBefore, countAfter)
+        val factsAfter = manager.getActiveTemporalFactsSync()
+        assertEquals("Pertanyaan tidak boleh menambah fakta baru ke memori", factsBefore.size, factsAfter.size)
+        assertEquals("Daftar ID fakta aktif tidak boleh berubah", factsBefore.map { it.id }, factsAfter.map { it.id })
     }
 
     @Test
@@ -496,7 +503,7 @@ class UserMemoryManagerTest {
 
     @Test
     fun `extractAndRecordConversationalFacts mengekstrak fakta ulang tahun, kendaraan plat nomor, rutinitas, kuliner favorit, dan atasan`() = kotlinx.coroutines.runBlocking {
-        val manager = UserMemoryManager()
+        val manager = newUnconfinedMemoryManager()
         manager.clearLocalMemory()
         manager.setUserDisplayName("Maulana", isConfirmed = true)
 
